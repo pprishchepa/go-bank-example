@@ -2,6 +2,7 @@ package v1
 
 import (
 	"context"
+	"errors"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -35,16 +36,15 @@ func (r WalletRoutes) RegisterRoutes(e *gin.RouterGroup) {
 }
 
 func (r WalletRoutes) retrieveBalance(c *gin.Context) {
-	var req model.GetBalanceRequest
-	if err := c.ShouldBindUri(&req); err != nil {
+	var reqWallet model.WalletRequest
+	if err := c.ShouldBindUri(&reqWallet); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	balance, err := r.service.GetBalance(c.Request.Context(), req.WalletID)
+	balance, err := r.service.GetBalance(c.Request.Context(), reqWallet.ID)
 	if err != nil {
-		log.Err(err).Int("walletId", req.WalletID).Msg("could not get balance")
-		c.JSON(http.StatusInternalServerError, gin.H{"error": http.StatusText(http.StatusInternalServerError)})
+		r.handleError(c, err, reqWallet.ID, "could not get balance")
 		return
 	}
 
@@ -55,19 +55,24 @@ func (r WalletRoutes) retrieveBalance(c *gin.Context) {
 }
 
 func (r WalletRoutes) debitMoney(c *gin.Context) {
-	var req model.DebitMoneyRequest
-	if err := c.ShouldBindJSON(&req); err != nil {
+	var reqWallet model.WalletRequest
+	if err := c.ShouldBindUri(&reqWallet); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	var reqBody model.DebitMoneyRequest
+	if err := c.ShouldBindJSON(&reqBody); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
 	err := r.service.DebitMoney(c.Request.Context(), domain.DebitEntry{
-		WalletID: req.WalletID,
-		Amount:   money.NewFromInt(req.Amount),
+		WalletID: reqWallet.ID,
+		Amount:   money.NewFromInt(reqBody.Amount),
 	})
 	if err != nil {
-		log.Err(err).Int("walletId", req.WalletID).Msg("could not debit money")
-		c.JSON(http.StatusInternalServerError, gin.H{"error": http.StatusText(http.StatusInternalServerError)})
+		r.handleError(c, err, reqWallet.ID, "could not debit money")
 		return
 	}
 
@@ -75,21 +80,43 @@ func (r WalletRoutes) debitMoney(c *gin.Context) {
 }
 
 func (r WalletRoutes) creditMoney(c *gin.Context) {
-	var req model.CreditMoneyRequest
-	if err := c.ShouldBindJSON(&req); err != nil {
+	var reqWallet model.WalletRequest
+	if err := c.ShouldBindUri(&reqWallet); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	var reqBody model.CreditMoneyRequest
+	if err := c.ShouldBindJSON(&reqBody); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
 	err := r.service.CreditMoney(c.Request.Context(), domain.CreditEntry{
-		WalletID: req.WalletID,
-		Amount:   money.NewFromInt(req.Amount),
+		WalletID: reqWallet.ID,
+		Amount:   money.NewFromInt(reqBody.Amount),
 	})
 	if err != nil {
-		log.Err(err).Int("walletId", req.WalletID).Msg("could not credit money")
-		c.JSON(http.StatusInternalServerError, gin.H{"error": http.StatusText(http.StatusInternalServerError)})
+		r.handleError(c, err, reqWallet.ID, "could not credit money")
 		return
 	}
 
 	c.Status(http.StatusOK)
+}
+
+func (r WalletRoutes) handleError(c *gin.Context, err error, walletID int, msg string) {
+	if errors.Is(err, domain.ErrWalletNotFound) {
+		log.Debug().Err(err).Int("walletId", walletID).Msg(msg)
+		c.JSON(http.StatusBadRequest, gin.H{"error": "wallet not found"})
+		return
+	}
+
+	if errors.Is(err, domain.ErrInsufficientFunds) {
+		log.Debug().Err(err).Int("walletId", walletID).Msg(msg)
+		c.JSON(http.StatusBadRequest, gin.H{"error": "insufficient funds"})
+		return
+	}
+
+	log.Err(err).Int("walletId", walletID).Msg(msg)
+	c.JSON(http.StatusInternalServerError, gin.H{"error": http.StatusText(http.StatusInternalServerError)})
 }

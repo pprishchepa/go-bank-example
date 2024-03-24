@@ -2,12 +2,14 @@ package service
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"strconv"
 	"time"
 
 	"github.com/cenkalti/backoff/v4"
 	"github.com/pprishchepa/go-bank-example/domain"
+	"github.com/pprishchepa/go-bank-example/internal/entity"
 	"github.com/rs/zerolog/log"
 	"golang.org/x/sync/singleflight"
 )
@@ -45,7 +47,7 @@ func NewWalletService(txFactory WalletStoreTxFactory, cache WalletCacheStore) *W
 func (s *WalletService) GetBalance(ctx context.Context, walletID int) (*domain.WalletBalance, error) {
 	balance, err := s.cache.GetBalance(ctx, walletID)
 	if err != nil {
-		log.Warn().Err(err).Int("walletID", walletID).Msg("could not get balance from cache")
+		log.Warn().Err(err).Int("walletId", walletID).Msg("could not get balance from cache")
 	}
 	if balance != nil {
 		return balance, nil
@@ -60,7 +62,7 @@ func (s *WalletService) GetBalance(ctx context.Context, walletID int) (*domain.W
 			return nil, err
 		}
 		if err = s.cache.SaveBalance(ctx, balance); err != nil {
-			log.Warn().Err(err).Int("walletID", walletID).Msg("could not save balance to cache")
+			log.Warn().Err(err).Int("walletId", walletID).Msg("could not save balance to cache")
 		}
 		return balance, nil
 	})
@@ -90,8 +92,9 @@ func (s *WalletService) DebitMoney(ctx context.Context, entry domain.DebitEntry)
 	}
 
 	if err := s.cache.SaveBalance(ctx, balance); err != nil {
-		log.Warn().Err(err).Int("walletID", entry.WalletID).Msg("could not update balance in cache")
+		log.Warn().Err(err).Int("walletId", entry.WalletID).Msg("could not update balance in cache")
 	}
+
 	return nil
 }
 
@@ -114,8 +117,9 @@ func (s *WalletService) CreditMoney(ctx context.Context, entry domain.CreditEntr
 	}
 
 	if err := s.cache.SaveBalance(ctx, balance); err != nil {
-		log.Warn().Err(err).Int("walletID", entry.WalletID).Msg("could not update balance in cache")
+		log.Warn().Err(err).Int("walletId", entry.WalletID).Msg("could not update balance in cache")
 	}
+
 	return nil
 }
 
@@ -130,7 +134,12 @@ func (s *WalletService) runOrRepeatTx(ctx context.Context, fn func(tx WalletStor
 	expBackoff.MaxElapsedTime = 5 * time.Second
 
 	return backoff.Retry(func() error {
-		return s.runOnceTx(ctx, fn)
+		err := s.runOnceTx(ctx, fn)
+		if errors.Is(err, entity.ErrTxConflict) {
+			return err // retry on conflict
+		}
+		return backoff.Permanent(err) // do not retry on other errors
+
 	}, expBackoff)
 }
 

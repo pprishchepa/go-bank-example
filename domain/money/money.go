@@ -1,7 +1,6 @@
 package money
 
 import (
-	"encoding/json"
 	"math"
 
 	"github.com/shopspring/decimal"
@@ -33,19 +32,6 @@ func (m Money) Sub(v Money) Money {
 
 func (m Money) AsInt() int {
 	return int(m.dec.Mul(decimalVal).IntPart())
-}
-
-func (m Money) MarshalJSON() ([]byte, error) {
-	return json.Marshal(m.AsInt())
-}
-
-func (m *Money) UnmarshalJSON(data []byte) error {
-	var v int
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	*m = NewFromInt(v)
-	return nil
 }
 
 func NewFromDecimal(v decimal.Decimal) Money {

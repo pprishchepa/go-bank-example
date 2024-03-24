@@ -51,7 +51,7 @@ func (c WalletUseCases) CreditMoney(ctx context.Context, entry CreditEntry) erro
 
 	newAmount := balance.Amount.Sub(entry.Amount)
 	if newAmount.IsNegative() {
-		return fmt.Errorf("insufficient funds")
+		return ErrInsufficientFunds
 	}
 
 	balance.Amount = newAmount
