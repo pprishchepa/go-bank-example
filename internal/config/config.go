@@ -14,6 +14,10 @@ type Config struct {
 		Port int `env:"HTTP_PORT, default=8081"`
 	}
 
+	Auth struct {
+		JWTSecret string `env:"JWT_SECRET, default=CHANGE_ME"`
+	}
+
 	Log struct {
 		Level  string `env:"LOG_LEVEL, default=info"`
 		Pretty bool   `env:"LOG_PRETTY, default=false"`

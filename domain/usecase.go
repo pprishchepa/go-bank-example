@@ -19,7 +19,7 @@ func (c WalletUseCases) RetrieveBalance(ctx context.Context, walletID int) (*Wal
 
 func (c WalletUseCases) DebitMoney(ctx context.Context, entry DebitEntry) error {
 	if !entry.Amount.IsPositive() {
-		return fmt.Errorf("invalid amount")
+		return ErrInvalidAmount
 	}
 
 	balance, err := c.storage.GetBalance(ctx, entry.WalletID)
@@ -41,7 +41,7 @@ func (c WalletUseCases) DebitMoney(ctx context.Context, entry DebitEntry) error 
 
 func (c WalletUseCases) CreditMoney(ctx context.Context, entry CreditEntry) error {
 	if !entry.Amount.IsPositive() {
-		return fmt.Errorf("invalid amount")
+		return ErrInvalidAmount
 	}
 
 	balance, err := c.storage.GetBalance(ctx, entry.WalletID)

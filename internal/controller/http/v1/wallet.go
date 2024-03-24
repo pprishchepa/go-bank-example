@@ -111,6 +111,12 @@ func (r WalletRoutes) handleError(c *gin.Context, err error, walletID int, msg s
 		return
 	}
 
+	if errors.Is(err, domain.ErrInvalidAmount) {
+		log.Debug().Err(err).Int("walletId", walletID).Msg(msg)
+		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid amount"})
+		return
+	}
+
 	if errors.Is(err, domain.ErrInsufficientFunds) {
 		log.Debug().Err(err).Int("walletId", walletID).Msg(msg)
 		c.JSON(http.StatusBadRequest, gin.H{"error": "insufficient funds"})

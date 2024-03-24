@@ -34,10 +34,6 @@ func (m Money) AsInt() int {
 	return int(m.dec.Mul(decimalVal).IntPart())
 }
 
-func NewFromDecimal(v decimal.Decimal) Money {
-	return Money{v}
-}
-
 func NewFromInt(v int) Money {
 	return Money{decimal.NewFromInt(int64(v)).Div(decimalVal)}
 }
