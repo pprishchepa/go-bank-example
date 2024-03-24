@@ -1,0 +1,7 @@
+.idea
+.vscode
+tmp
+.env
+.air.toml
+http-client.private.env.json
+http-requests.http
