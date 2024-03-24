@@ -7,8 +7,8 @@ import (
 	"time"
 
 	"github.com/go-redis/cache/v9"
-	"github.com/pprishchepa/go-bank-example/domain"
-	"github.com/pprishchepa/go-bank-example/domain/money"
+	"github.com/pprishchepa/go-casino-example/domain"
+	"github.com/pprishchepa/go-casino-example/domain/money"
 	"github.com/redis/go-redis/v9"
 )
 

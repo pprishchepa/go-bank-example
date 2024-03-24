@@ -8,8 +8,8 @@ import (
 	"time"
 
 	"github.com/cenkalti/backoff/v4"
-	"github.com/pprishchepa/go-bank-example/domain"
-	"github.com/pprishchepa/go-bank-example/internal/entity"
+	"github.com/pprishchepa/go-casino-example/domain"
+	"github.com/pprishchepa/go-casino-example/internal/entity"
 	"github.com/rs/zerolog/log"
 	"golang.org/x/sync/singleflight"
 )

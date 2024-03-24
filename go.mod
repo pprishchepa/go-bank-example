@@ -1,4 +1,4 @@
-module github.com/pprishchepa/go-bank-example
+module github.com/pprishchepa/go-casino-example
 
 go 1.22.0
 
@@ -14,8 +14,8 @@ require (
 	github.com/ory/dockertest/v3 v3.10.0
 	github.com/redis/go-redis/v9 v9.5.1
 	github.com/rs/zerolog v1.32.0
-	github.com/sethvargo/go-envconfig v1.0.0
-	github.com/shopspring/decimal v1.2.0
+	github.com/sethvargo/go-envconfig v1.0.1
+	github.com/shopspring/decimal v1.3.1
 	github.com/stretchr/testify v1.9.0
 	go.uber.org/automaxprocs v1.5.3
 	go.uber.org/fx v1.21.0

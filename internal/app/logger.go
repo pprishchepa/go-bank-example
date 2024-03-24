@@ -5,7 +5,7 @@ import (
 	stdlog "log"
 	"os"
 
-	"github.com/pprishchepa/go-bank-example/internal/config"
+	"github.com/pprishchepa/go-casino-example/internal/config"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 )

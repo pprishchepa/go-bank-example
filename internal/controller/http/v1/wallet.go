@@ -6,9 +6,9 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/pprishchepa/go-bank-example/domain"
-	"github.com/pprishchepa/go-bank-example/domain/money"
-	"github.com/pprishchepa/go-bank-example/internal/controller/http/v1/model"
+	"github.com/pprishchepa/go-casino-example/domain"
+	"github.com/pprishchepa/go-casino-example/domain/money"
+	"github.com/pprishchepa/go-casino-example/internal/controller/http/v1/model"
 	"github.com/rs/zerolog/log"
 	_ "github.com/rs/zerolog/log"
 )

@@ -3,7 +3,7 @@ package money_test
 import (
 	"testing"
 
-	"github.com/pprishchepa/go-bank-example/domain/money"
+	"github.com/pprishchepa/go-casino-example/domain/money"
 	"github.com/stretchr/testify/assert"
 )
 

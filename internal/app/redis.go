@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/pprishchepa/go-bank-example/internal/config"
+	"github.com/pprishchepa/go-casino-example/internal/config"
 	"github.com/redis/go-redis/v9"
 	"github.com/rs/zerolog/log"
 	"go.uber.org/fx"

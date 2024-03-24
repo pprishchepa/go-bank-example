@@ -4,8 +4,8 @@ import (
 	"context"
 	"testing"
 
-	"github.com/pprishchepa/go-bank-example/domain"
-	"github.com/pprishchepa/go-bank-example/domain/money"
+	"github.com/pprishchepa/go-casino-example/domain"
+	"github.com/pprishchepa/go-casino-example/domain/money"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"go.uber.org/mock/gomock"

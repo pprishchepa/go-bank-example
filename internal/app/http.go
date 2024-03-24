@@ -8,7 +8,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/pprishchepa/go-bank-example/internal/config"
+	"github.com/pprishchepa/go-casino-example/internal/config"
 	"github.com/rs/zerolog/log"
 	"go.uber.org/fx"
 )

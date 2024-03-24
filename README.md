@@ -1,1 +1,1 @@
-# go-bank-example
+# go-casino-example

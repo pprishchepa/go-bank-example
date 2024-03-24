@@ -1,7 +1,7 @@
 package domain
 
 import (
-	"github.com/pprishchepa/go-bank-example/domain/money"
+	"github.com/pprishchepa/go-casino-example/domain/money"
 )
 
 type Wallet struct {

@@ -8,9 +8,9 @@ import (
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/jackc/pgx/v5/pgxpool"
-	"github.com/pprishchepa/go-bank-example/domain"
-	"github.com/pprishchepa/go-bank-example/domain/money"
-	"github.com/pprishchepa/go-bank-example/internal/entity"
+	"github.com/pprishchepa/go-casino-example/domain"
+	"github.com/pprishchepa/go-casino-example/domain/money"
+	"github.com/pprishchepa/go-casino-example/internal/entity"
 )
 
 // See https://www.postgresql.org/docs/current/errcodes-appendix.html

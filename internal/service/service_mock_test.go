@@ -13,8 +13,8 @@ import (
 	context "context"
 	reflect "reflect"
 
-	domain "github.com/pprishchepa/go-bank-example/domain"
-	service "github.com/pprishchepa/go-bank-example/internal/service"
+	domain "github.com/pprishchepa/go-casino-example/domain"
+	service "github.com/pprishchepa/go-casino-example/internal/service"
 	gomock "go.uber.org/mock/gomock"
 )
 

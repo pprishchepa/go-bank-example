@@ -6,9 +6,9 @@ import (
 	"strings"
 
 	"github.com/jackc/pgx/v5/pgxpool"
-	"github.com/pprishchepa/go-bank-example/internal/config"
-	"github.com/pprishchepa/go-bank-example/internal/pkg/pgxmigrator"
-	"github.com/pprishchepa/go-bank-example/migrations"
+	"github.com/pprishchepa/go-casino-example/internal/config"
+	"github.com/pprishchepa/go-casino-example/internal/pkg/pgxmigrator"
+	"github.com/pprishchepa/go-casino-example/migrations"
 	"go.uber.org/fx"
 )
 
