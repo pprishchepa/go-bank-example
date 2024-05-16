@@ -10,7 +10,6 @@ import (
 	"github.com/pprishchepa/go-casino-example/domain/money"
 	"github.com/pprishchepa/go-casino-example/internal/controller/http/v1/model"
 	"github.com/rs/zerolog/log"
-	_ "github.com/rs/zerolog/log"
 )
 
 //go:generate go run go.uber.org/mock/mockgen -source=wallet.go -destination=wallet_mock_test.go -package=v1_test
